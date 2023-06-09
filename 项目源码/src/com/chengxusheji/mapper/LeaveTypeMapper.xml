@@ -1,0 +1,48 @@
+﻿<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace命名空间，为了对sql语句进行隔离，方便管理，mapper开发dao方式，使用namespace有特殊作用  
+mapper代理开发时将namespace指定为mapper接口的全限定名  
+ -->
+<mapper namespace="com.chengxusheji.mapper.LeaveTypeMapper"> 
+<!--在mapper.xml文件中配置很多的sql语句，执行每个sql语句时，封装为MappedStatement对象 
+mapper.xml以statement为单位管理sql语句  
+ -->
+	<!-- 添加请假类型记录 -->
+	<insert id="addLeaveType" parameterType="leaveType">
+		insert into t_leaveType(leaveTypeName) values 
+		(#{leaveTypeName})
+	</insert>
+
+	<!-- 按照查询条件分页查询请假类型记录 -->
+	<select id="queryLeaveType" resultMap="leaveTypeMap" >
+		select t_leaveType.* from t_leaveType ${where} limit #{startIndex},#{pageSize}
+	</select>
+	<resultMap id="leaveTypeMap" type="leaveType">
+        <id property="leaveTypeId" column="leaveTypeId" />
+    </resultMap>
+
+    <!-- 按照查询条件查询所有请假类型记录 -->
+	<select id="queryLeaveTypeList" resultMap="leaveTypeMap" >
+		select t_leaveType.* from t_leaveType ${where}
+	</select>
+
+    <!-- 按照查询条件的请假类型记录数 -->
+	<select id="queryLeaveTypeCount" resultType="int">
+		select count(*) from t_leaveType ${where}
+	</select>
+
+	<!-- 根据主键查询某个请假类型记录 -->
+	<select id="getLeaveType" parameterType="int" resultMap="leaveTypeMap">
+		select * from t_leaveType where t_leaveType.leaveTypeId = #{leaveTypeId}
+	</select>
+
+	<!-- 更新请假类型记录 -->
+	<update id="updateLeaveType" parameterType="leaveType">
+		update t_leaveType set leaveTypeName=#{leaveTypeName} where leaveTypeId = #{leaveTypeId}
+	</update>
+
+	<!-- 删除请假类型记录 -->
+	<delete id="deleteLeaveType" parameterType="int">
+		delete from t_leaveType where leaveTypeId=#{leaveTypeId}
+	</delete>
+
+</mapper>
